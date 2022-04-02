@@ -44,3 +44,13 @@ void loop() {
   }
 }
 ```
+
+### One graph scene multi line
+```cpp
+  String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2"]";
+```
+### Multi graph scene multi line
+```cpp
+  String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2"]#["+String(x)+","+String(y+20)+",lbl3"]";
+```
+
