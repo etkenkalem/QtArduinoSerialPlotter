@@ -12,3 +12,35 @@ pip install PyQt5 pyqtgraph qdarkstyle qtawesome
 ```sh
 python qtArduinoSerialPlotter.py
 ```
+
+![plotterInfo](/screenShots/plotter.gif)
+
+### Basic usage
+
+```cpp
+
+void setup() {
+  Serial.begin(115200); 
+}
+
+float x=0.0;
+char buffer[200];
+
+void loop() {  
+  float y=x*x*x;
+  y=y/100.0;
+
+  //"pltr#[xValue,yValue,Label]"
+  String data="pltr#["+String(x)+","+String(y)+",lbl1]";
+  Serial.println(data);  
+  x++;
+  
+  delay(200);  
+  
+  while (Serial.available() > 0) {   
+    if (Serial.read() == '\n') {      
+      Serial.println("ok");    
+    }
+  }
+}
+```
