@@ -31,7 +31,7 @@ void loop() {
   y=y/100.0;
 
   //"pltr#[xValue,yValue,Label]"
-  String data="pltr#["+String(x)+","+String(y)+",lbl1]";
+  String data="pltr#["+String(x)+","+String(y)+",Lbl1]";
   Serial.println(data);  
   x++;
   
@@ -44,6 +44,10 @@ void loop() {
   }
 }
 ```
+
+![image](/screenShots/heater.png)
+
+
 
 ### One graph scene multi line
 ```cpp
