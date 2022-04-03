@@ -30,7 +30,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusBar().showMessage('Not Connected...')
         
         self.isGraphsInitiated=False       
-        self.graphs=[]        
+        self.graphs=[]
+        self.bufferSize=250
+        self.labelBuffer=[] 
         
         layout = QtWidgets.QVBoxLayout(self)
 
@@ -45,6 +47,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.cmbPorts=QtWidgets.QComboBox(gLayoutToolbox)
         self.cmbRates=QtWidgets.QComboBox(gLayoutToolbox)
+        
+        lblBufferSize = QtWidgets.QLabel(gLayoutToolbox,text="Buffer Size:")  
+        cmbBufferSizes=QtWidgets.QComboBox(gLayoutToolbox)
+        cmbBufferSizes.setMinimumWidth(80)
+        cmbBufferSizes.addItems(str(i) for i in range(250,10000,250))
+        def changeBufferSize():
+            self.bufferSize=int(cmbBufferSizes.currentText())
+        cmbBufferSizes.currentTextChanged.connect(changeBufferSize)
+        
         
         btnRefresh = QtWidgets.QPushButton(qta.icon('fa.refresh'),'Refresh',gLayoutToolbox,clicked=self.refresh)
         btnRefresh.setIconSize(QtCore.QSize(13, 13))
@@ -68,16 +79,27 @@ class MainWindow(QtWidgets.QMainWindow):
         hBoxLayoutTool.addWidget(self.cmbRates)
         hBoxLayoutTool.addWidget(btnRefresh)    
         hBoxLayoutTool.addWidget(btnConnect)    
-        space=QtWidgets.QSpacerItem(10,1,hPolicy=QtWidgets.QSizePolicy.Policy.Expanding,vPolicy=QtWidgets.QSizePolicy.Policy.Minimum)
+        space=QtWidgets.QSpacerItem(10,1,hPolicy=QtWidgets.QSizePolicy.Policy.Expanding,vPolicy=QtWidgets.QSizePolicy.Policy.Minimum)               
         hBoxLayoutTool.addItem(space)
+        hBoxLayoutTool.addWidget(lblBufferSize)
+        hBoxLayoutTool.addWidget(cmbBufferSizes)
         hBoxLayoutTool.addWidget(self.cbMarkers)
         hBoxLayoutTool.addWidget(self.text)                
         hBoxLayoutTool.addWidget(self.btnSend) 
         
-        self.gLayoutPlotBox=QtWidgets.QGroupBox("plotbox") 
+        self.gLayoutPlotBox=QtWidgets.QGroupBox("plotbox")
+
         
-        self.vBoxLayout=QtWidgets.QVBoxLayout(self.gLayoutPlotBox)
-            
+        self.hBoxWrapper=QtWidgets.QHBoxLayout(self.gLayoutPlotBox)
+        
+         
+        
+        #self.vBoxLayout=QtWidgets.QVBoxLayout(self.gLayoutPlotBox)
+        self.vBoxLayout=QtWidgets.QVBoxLayout()#for graphs
+        self.vBoxColorsLayout=QtWidgets.QVBoxLayout()#for graphs
+        self.hBoxWrapper.addLayout(self.vBoxLayout)    
+        self.hBoxWrapper.addLayout(self.vBoxColorsLayout)           
+        
         self.serialData = QtWidgets.QLabel(self.gLayoutPlotBox)       
         self.serialData.setWordWrap(True)
         self.mouseLeft=True
@@ -98,9 +120,14 @@ class MainWindow(QtWidgets.QMainWindow):
         widget = QtWidgets.QWidget()       
         widget.setLayout(layout)
         self.setCentralWidget(widget)
-    
-   
-    
+        
+    def setColors(self,widget):
+        color = QtWidgets.QColorDialog.getColor()
+        pen = pg.mkPen(color=color)
+        self.sender().setStyleSheet("background-color:"+color.name())
+        indexs=self.sender().objectName().split(",")
+        self.graphs[int(indexs[0])]["lines"][int(indexs[1])]["plot"].setPen(pen)
+        
 
     def parseTheLine(self,text):        
         #text="pltr#[10,20,lbl1:10,20,lbl2]#[10,30,lbl3:20,30,lbl4]"        
@@ -113,16 +140,16 @@ class MainWindow(QtWidgets.QMainWindow):
         for i in range(len(strGraphs)):
             strGraph =strGraphs[i]                              
             strLines=re.search(r'[^\[]+(?=\])',strGraph)
-            graphWidget=None
+            
             if not self.isGraphsInitiated:
                 graphWidget = pg.PlotWidget(self.gLayoutPlotBox)
                 #graphWidget = pg.plot()
-                graphWidget.showGrid(x=True,y=True,alpha=0.3)
+                graphWidget.showGrid(x=True,y=True,alpha=0.5)
                 graphWidget.addLegend()
 
                 
                 self.vBoxLayout.addWidget(graphWidget)
-                graph={"lines":[],"graphWidget":None,"lblcur":None,"curvePoint":None}                           
+                graph={"lines":[],"graphWidget":None,"curvePoint":None}                           
                 graph["graphWidget"]=graphWidget                
                 self.graphs.append(graph)
                 
@@ -132,18 +159,22 @@ class MainWindow(QtWidgets.QMainWindow):
                 return
            
             strLines=strLines[0].split(":")
-            print("strlines====>"+str(strLines))
+            
             for j in range(len(strLines)):
                 strLine=strLines[j]
                 strLineData= strLine.split(",")
-                print("strLineData"+str(strLineData))                 
+                                 
                 if not self.isGraphsInitiated:
                     label="lbl"+str(i+j)
                     if len(strLineData)>2 : label=strLineData[2] 
 
-                    line={"x":[],"y":[],"label":label,"plot":None}
-                    pen = pg.mkPen(color=(random.randint(100,255), random.randint(100,255), random.randint(100,255)))
-                    line["plot"]=graphWidget.plot([0],[0],name=label,symbol="s",pen=pen)                    
+                    line={"x":[],"y":[],"label":label,"plot":None}                    
+                    #pen = pg.mkPen(color=random.choices(range(256), k=3))                       
+                    randColor="#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
+
+
+                    pen = pg.mkPen(color=randColor)    
+                    line["plot"]=graph["graphWidget"].plot([],[],name=label,width=2,symbol="s",pen=pen)                    
                     if self.cbMarkers.isChecked():
                         line["plot"].setSymbolSize(5) 
                     else:
@@ -151,22 +182,38 @@ class MainWindow(QtWidgets.QMainWindow):
                     graph["lines"].append(line) 
                     
                     
+                    lblColor=QtWidgets.QPushButton()
+                    lblColor.setFixedWidth(10)
+                    lblColor.setFixedHeight(10)
+                    lblColor.setObjectName(str(i)+","+str(j))                   
+                    lblColor.setStyleSheet("background-color:"+randColor)                    
+                    lblColor.clicked.connect(self.setColors)
+                    self.vBoxColorsLayout.addWidget(lblColor)
+
+                    
                     def mouseMoved(e):
                         if not self.isGraphsInitiated:
                             return
-                        print(e)
+                        
                         for graph in self.graphs:
                             vb=graph["graphWidget"].plotItem.vb
                             if graph["graphWidget"].sceneBoundingRect().contains(e):
-                                mouse_point=vb.mapSceneToView(e)                                
-                                self.gLayoutPlotBox.setTitle("plotbox "+f"X： {mouse_point.x()} Y: {mouse_point.y()}")
-                                print(mouse_point)
-                    graphWidget.scene().sigMouseMoved.connect(mouseMoved)
+                                mouse_point=vb.mapSceneToView(e)
+                                #print(e.sender().objectName())
+                                if self.sender()==graph["graphWidget"].scene():                                
+                                    self.gLayoutPlotBox.setTitle("plotbox "+f"X： {mouse_point.x()} Y: {mouse_point.y()}")
+                               
+                    
+                    graph["graphWidget"].scene().sigMouseMoved.connect(mouseMoved)
+                   
                     
                             
                 line= graph["lines"][j]                    
-                x=strLineData[0]
+                x=strLineData[0]               
                 y=strLineData[1]
+                if(len(line["x"])>self.bufferSize):  
+                    del  line["x"][0]           
+                    del  line["y"][0]           
                 line["x"].append(float(x))
                 line["y"].append(float(y))
         self.isGraphsInitiated=True          
@@ -182,8 +229,12 @@ class MainWindow(QtWidgets.QMainWindow):
     @QtCore.pyqtSlot()
     def receive(self):        
         while (self.serial.canReadLine()):
-            text=self.serial.readLine().data().decode()                     
-            self.serialData.setText(self.serialData.text()+text)
+            text=self.serial.readLine().data().decode()
+            self.labelBuffer.append(text)
+            if len(self.labelBuffer)>(self.bufferSize/4):
+                del self.labelBuffer[0]                     
+            #self.serialData.setText(self.serialData.text()+text)
+            self.serialData.setText("".join(self.labelBuffer))
             scrollBar = self.scroll.verticalScrollBar()
             if self.mouseLeft:
                 scrollBar.setValue(scrollBar.maximum())
@@ -227,6 +278,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.graphs.clear()
         self.isGraphsInitiated=False
         self.gLayoutPlotBox.setTitle("plotbox")
+       
+
+        for cnt in reversed(range(self.vBoxColorsLayout.count())):          
+            widget = self.vBoxColorsLayout.takeAt(cnt).widget()
+            if widget is not None:                 
+                widget.deleteLater()
 
         for cnt in reversed(range(self.vBoxLayout.count())):          
             widget = self.vBoxLayout.takeAt(cnt).widget()
