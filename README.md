@@ -1,6 +1,6 @@
 # QtArduinoSerialPlotter
 Arduino Serial Plotter, pyqtgraph
-
+![plotterInfo](/screenShots/heater.png)
 ### Requirements
 - Python 3.8+
 
@@ -13,7 +13,7 @@ pip install PyQt5 pyqtgraph qdarkstyle qtawesome
 python qtArduinoSerialPlotter.py
 ```
 
-![plotterInfo](/screenShots/plotter.gif)
+![plotterInfo](/screenShots/plottertx.gif)
 
 ### Basic usage
 
