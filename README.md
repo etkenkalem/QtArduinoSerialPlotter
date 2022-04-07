@@ -17,6 +17,20 @@ python qtArduinoSerialPlotter.py
 
 ### Basic usage
 
+- Only data
+  ```cpp
+    String data ="pltr#["+String(x)+","+String(y)+"]";
+  ```
+- Add label
+  ```cpp
+    String data ="pltr#["+String(x)+","+String(y)+",lbl1]";
+  ```
+- Add Color (#f00)
+  ```cpp
+    String data ="pltr#["+String(x)+","+String(y)+",lbl1,f00]";
+  ```
+- Arduino Example
+
 ```cpp
 
 void setup() {
@@ -49,12 +63,12 @@ void loop() {
 
 
 
-### One graph scene multi line
-```cpp
-  String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2]";
-```
-### Multi graph scene multi line
-```cpp
-  String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2]#["+String(x)+","+String(y+20)+",lbl3]";
-```
+- One graph scene multi line
+  ```cpp
+    String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2]";
+  ```
+- Multi graph scene multi line
+  ```cpp
+    String data ="pltr#["+String(x)+","+String(y)+",lbl1:"+String(x)+","+String(y+5)+",lbl2]#["+String(x)+","+String(y+20)+",lbl3]";
+  ```
 
