@@ -169,8 +169,12 @@ class MainWindow(QtWidgets.QMainWindow):
                     if len(strLineData)>2 : label=strLineData[2] 
 
                     line={"x":[],"y":[],"label":label,"plot":None}                    
-                    #pen = pg.mkPen(color=random.choices(range(256), k=3))                       
-                    randColor="#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
+                    #pen = pg.mkPen(color=random.choices(range(256), k=3)) 
+                    randColor=""
+                    if len(strLineData)>3:
+                        randColor="#"+strLineData[3]
+                    else:                      
+                        randColor="#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
 
 
                     pen = pg.mkPen(color=randColor)    
