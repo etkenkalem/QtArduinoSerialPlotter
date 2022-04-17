@@ -13,6 +13,9 @@ Requirement  :
 
 import random
 from PyQt5 import QtWidgets, QtCore, QtSerialPort
+
+
+
 import pyqtgraph as pg #fast tutorial: https://www.pythonguis.com/tutorials/plotting-pyqtgrap/
 import sys
 import re
@@ -48,6 +51,9 @@ class MainWindow(QtWidgets.QMainWindow):
         cmbBufferSizes=QtWidgets.QComboBox(gLayoutToolbox)
         cmbBufferSizes.setMinimumWidth(80)
         cmbBufferSizes.addItems(str(i) for i in range(250,10000,250))
+        cmbBufferSizes.setEditable(True)
+        cmbBufferSizes.lineEdit().setReadOnly(True)
+        cmbBufferSizes.lineEdit().setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         def changeBufferSize():
             self.bufferSize=int(cmbBufferSizes.currentText())
         cmbBufferSizes.currentTextChanged.connect(changeBufferSize)
@@ -343,9 +349,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def clearHistory(self):
         self.serialData.clear()
-        if hasattr(self,'serial'):
-            if self.serial.isOpen():
-                self.serial.flush()
         self.graphs.clear()
         self.graphs=[]
         self.isGraphsInitiated=False
@@ -387,6 +390,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.clearHistory()
         if hasattr(self,'serial'):
              if self.serial.isOpen():
+                self.serial.flush()
                  #reset the arduino
                 self.serial.setDataTerminalReady(False)
                 self.serial.setDataTerminalReady(True)
@@ -414,8 +418,18 @@ class MainWindow(QtWidgets.QMainWindow):
 
         print(serial_ports)
         self.cmbPorts.clear()
+        self.cmbPorts.setEditable(True)
+
+        self.cmbPorts.lineEdit().setReadOnly(True)
+        self.cmbPorts.lineEdit().setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+
         self.cmbPorts.addItems(serial_ports)
 
+
+
+        self.cmbRates.setEditable(True)
+        self.cmbRates.lineEdit().setReadOnly(True)
+        self.cmbRates.lineEdit().setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.cmbRates.clear()
         self.cmbRates.addItem("1200",userData=QtSerialPort.QSerialPort.BaudRate.Baud1200)
         self.cmbRates.addItem("2400",QtSerialPort.QSerialPort.BaudRate.Baud2400)
@@ -425,7 +439,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.cmbRates.addItem("38400",QtSerialPort.QSerialPort.BaudRate.Baud38400)
         self.cmbRates.addItem("57600",QtSerialPort.QSerialPort.BaudRate.Baud57600)
         self.cmbRates.addItem("115200",QtSerialPort.QSerialPort.BaudRate.Baud115200)
-        self.cmbRates.setCurrentText("115200")
+        self.cmbRates.setCurrentIndex(7)
+
 
 
 app = QtWidgets.QApplication(sys.argv)
