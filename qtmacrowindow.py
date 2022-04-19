@@ -53,7 +53,7 @@ class subwindow(QtWidgets.QWidget):
         self.saveMacroAction.triggered.connect(self.saveMacroFile)
         self.addButtonAction =self.menu.addAction("Add Button")
         self.addButtonAction.triggered.connect(self.addMacroButton)
-        self.seperateWindowAction =self.menu.addAction("Seperate Button")
+        self.seperateWindowAction =self.menu.addAction("Seperate Window")
         self.seperateWindowAction.triggered.connect(self.seperateWindow)
 
 
