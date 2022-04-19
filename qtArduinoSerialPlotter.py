@@ -22,11 +22,22 @@ import re
 import qdarkstyle
 import qtawesome as qta #run qta-browser from a shell to start the icon browser
 
+from qtmacrowindow import subwindow
+
+
+
 
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
+
+        self.macroCommands=[]
+
+        self.subw=subwindow()
+        self.subw.createWindow(100,400,self)
+
+
 
         self.setWindowTitle('Arduino Serial QtPlotter')
         self.setGeometry(50, 50, 940, 580)
@@ -59,11 +70,12 @@ class MainWindow(QtWidgets.QMainWindow):
         cmbBufferSizes.currentTextChanged.connect(changeBufferSize)
 
 
-        btnRefresh = QtWidgets.QPushButton(qta.icon('fa.refresh'),'Refresh',gLayoutToolbox,clicked=self.refresh)
+
+        btnRefresh = QtWidgets.QPushButton(qta.icon('fa.refresh'),'&Refresh',gLayoutToolbox,clicked=self.refresh)
         btnRefresh.setIconSize(QtCore.QSize(13, 13))
         btnRefresh.setStyleSheet("padding:4px;")
 
-        btnConnect = QtWidgets.QPushButton(qta.icon('mdi.connection'),'Connect',gLayoutToolbox,clicked=self.connect)
+        btnConnect = QtWidgets.QPushButton(qta.icon('mdi.connection'),'&Connect',gLayoutToolbox,clicked=self.connect)
         btnConnect.setIconSize(QtCore.QSize(13, 13))
         btnConnect.setStyleSheet("padding:4px;")
 
@@ -75,7 +87,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.serialControlLayout=QtWidgets.QHBoxLayout()
 
 
-        self.btnOpenFile = QtWidgets.QPushButton(qta.icon('fa.folder-open'),'Open File',self,clicked=self.openFile)
+        self.btnOpenFile = QtWidgets.QPushButton(qta.icon('fa.folder-open'),'&Open File',self,clicked=self.openFile)
         #self.btnSend.setIcon(fa5_icon)
         self.btnOpenFile.setIconSize(QtCore.QSize(13, 13))
         self.btnOpenFile.setStyleSheet("padding:4px;")
@@ -90,7 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.text.setMaximumWidth(700)
 
 
-        self.btnSend = QtWidgets.QPushButton(qta.icon('mdi.send'),'Send',self,clicked=self.send)
+        self.btnSend = QtWidgets.QPushButton(qta.icon('mdi.send'),'&Send',self,clicked=self.send)
         #self.btnSend.setIcon(fa5_icon)
         self.btnSend.setIconSize(QtCore.QSize(13, 13))
         self.btnSend.setStyleSheet("padding:4px;")
@@ -99,6 +111,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.text.returnPressed.connect(self.btnSend.click)
 
 
+        def showMacrosWindow():
+            self.subw.show();
+
+        self.btnMacros = QtWidgets.QPushButton(qta.icon('fa.code',scale_factor=0.8,color="white"),'&Macros',self,clicked=showMacrosWindow)
+        #self.btnSend.setIcon(fa5_icon)
+        self.btnMacros.setStyleSheet("padding:4px; margin-left:10px")
 
 
 
@@ -157,6 +175,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.serialControlLayout.addItem(space_ControlLayout)
         self.serialControlLayout.addWidget(self.text,80)
         self.serialControlLayout.addWidget(self.btnSend)
+        self.serialControlLayout.addWidget(self.btnMacros)
 
 
         layout.addLayout(self.serialControlLayout)
@@ -219,6 +238,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         randColor="#"+strLineData[3]
                     else:
                         randColor="#"+''.join([random.choice('ABCDEF0123456789') for i in range(6)])
+
 
 
                     pen = pg.mkPen(color=randColor)
@@ -291,7 +311,18 @@ class MainWindow(QtWidgets.QMainWindow):
             if self.mouseLeft:
                 scrollBar.setValue(scrollBar.maximum())
             text = text.rstrip('\r\n')
-            if self.cbSendAutomatically.isChecked():
+
+            if len(self.macroCommands) >0:
+                cmd=self.macroCommands[0]
+                if len(cmd)>0:
+                  cmdLine=  cmd.pop(0)
+                  self.text.setText(cmdLine)
+                  self.serial.write(str(cmdLine+"\n").encode())
+                  self.serial.flush()
+                else:
+                    self.macroCommands.pop(0)
+
+            elif self.cbSendAutomatically.isChecked():
                 if text.__contains__(self.txtWaitCmd.text()):
                     if len(self.selectedFileLines)>0:
                         self.currentLineNumber += 1
@@ -337,20 +368,29 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.serial= QtSerialPort.QSerialPort(self.cmbPorts.currentText(),baudRate=self.cmbRates.currentData(),readyRead=self.receive)
 
-        self.serial.open(QtCore.QIODevice.ReadWrite)
-
         #reset the arduino
+        self.serial.open(QtCore.QIODevice.OpenModeFlag.WriteOnly)
         self.serial.setDataTerminalReady(False)
         self.serial.setDataTerminalReady(True)
+        self.serial.close()
 
-        self.statusBar().showMessage('Connected...')
-        self.btnSend.setDisabled(False)
+
+        check = self.serial.open(QtCore.QIODevice.ReadWrite)
+
+
+        if check:
+            self.statusBar().showMessage('Connected...')
+            self.btnSend.setDisabled(False)
 
 
     def clearHistory(self):
         self.serialData.clear()
         self.graphs.clear()
         self.graphs=[]
+        self.selectedFile=None
+        self.selectedFileLines=[]
+        self.currentLineNumber=0
+        self.macroCommands=[]
         self.isGraphsInitiated=False
         self.gLayoutPlotBox.setTitle("plotbox")
 
@@ -358,11 +398,13 @@ class MainWindow(QtWidgets.QMainWindow):
         for cnt in reversed(range(self.vBoxColorsLayout.count())):
             widget = self.vBoxColorsLayout.takeAt(cnt).widget()
             if widget is not None:
+                widget.setParent(None)
                 widget.deleteLater()
 
         for cnt in reversed(range(self.vBoxLayout.count())):
             widget = self.vBoxLayout.takeAt(cnt).widget()
             if widget is not None:
+                widget.setParent(None)
                 widget.deleteLater()
 
         self.statusBar().showMessage('Not Connected...')
