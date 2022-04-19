@@ -1,107 +1,107 @@
 [
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 Y-1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-up",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "up",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 93,
-                                                                                                                                                                                                                                                                                                            "y": 30
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 X1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-right",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "right",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 154,
-                                                                                                                                                                                                                                                                                                            "y": 89
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 X-1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-left",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "left",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 33,
-                                                                                                                                                                                                                                                                                                            "y": 91
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 Y1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-down",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "down",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 96,
-                                                                                                                                                                                                                                                                                                            "y": 153
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G28",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "fa.home",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "space",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 94,
-                                                                                                                                                                                                                                                                                                            "y": 91
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 Z-1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-up",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "shift+up",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 235,
-                                                                                                                                                                                                                                                                                                            "y": 63
-                                                                                                                                                                                                        }
-                                                                                                    },
-                                                                                                    {
-                                                                                                                                                                                                        "buttonData": {
-                                                                                                                                                                                                                                                                                                            "buttonPos": {},
-                                                                                                                                                                                                                                                                                                            "buttonSize": {},
-                                                                                                                                                                                                                                                                                                            "buttonText": "",
-                                                                                                                                                                                                                                                                                                            "commandText": "G1 Z1",
-                                                                                                                                                                                                                                                                                                            "height": 55,
-                                                                                                                                                                                                                                                                                                            "iconName": "ei.caret-down",
-                                                                                                                                                                                                                                                                                                            "pos": {},
-                                                                                                                                                                                                                                                                                                            "shortCut": "shift+down",
-                                                                                                                                                                                                                                                                                                            "width": 55,
-                                                                                                                                                                                                                                                                                                            "x": 236,
-                                                                                                                                                                                                                                                                                                            "y": 129
-                                                                                                                                                                                                        }
-                                                                                                    }
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 Y-1",
+   "height": 55,
+   "iconName": "ei.caret-up",
+   "pos": {},
+   "shortCut": "up",
+   "width": 55,
+   "x": 93,
+   "y": 30
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 X1",
+   "height": 55,
+   "iconName": "ei.caret-right",
+   "pos": {},
+   "shortCut": "right",
+   "width": 55,
+   "x": 154,
+   "y": 89
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 X-1",
+   "height": 55,
+   "iconName": "ei.caret-left",
+   "pos": {},
+   "shortCut": "left",
+   "width": 55,
+   "x": 33,
+   "y": 91
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 Y1",
+   "height": 55,
+   "iconName": "ei.caret-down",
+   "pos": {},
+   "shortCut": "down",
+   "width": 55,
+   "x": 96,
+   "y": 153
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G28",
+   "height": 55,
+   "iconName": "fa.home",
+   "pos": {},
+   "shortCut": "space",
+   "width": 55,
+   "x": 94,
+   "y": 91
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 Z-1",
+   "height": 55,
+   "iconName": "ei.caret-up",
+   "pos": {},
+   "shortCut": "shift+up",
+   "width": 55,
+   "x": 235,
+   "y": 63
+  }
+ },
+ {
+  "buttonData": {
+   "buttonPos": {},
+   "buttonSize": {},
+   "buttonText": "",
+   "commandText": "G1 Z1",
+   "height": 55,
+   "iconName": "ei.caret-down",
+   "pos": {},
+   "shortCut": "shift+down",
+   "width": 55,
+   "x": 236,
+   "y": 129
+  }
+ }
 ]

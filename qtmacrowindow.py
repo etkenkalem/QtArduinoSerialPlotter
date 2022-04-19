@@ -197,7 +197,7 @@ class subwindow(QtWidgets.QWidget):
             mb.buttonData.height=mb.height()
 
 
-        jsonData=json.dumps(macroButtons, default=lambda o: o.__dict__, sort_keys=True, indent=100)
+        jsonData=json.dumps(macroButtons, default=lambda o: o.__dict__, sort_keys=True, indent=1)
         with open('macroScreen.tkmacro', 'w') as file:
             file.write(jsonData)
 
