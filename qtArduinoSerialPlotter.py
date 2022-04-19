@@ -56,7 +56,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
         self.cmbPorts=QtWidgets.QComboBox(gLayoutToolbox)
+        self.cmbPorts.setMinimumWidth(100)
         self.cmbRates=QtWidgets.QComboBox(gLayoutToolbox)
+        self.cmbRates.setMinimumWidth(90)
 
         lblBufferSize = QtWidgets.QLabel(gLayoutToolbox,text="Buffer Size:")
         cmbBufferSizes=QtWidgets.QComboBox(gLayoutToolbox)
@@ -184,7 +186,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.serialControlWrapper= QtWidgets.QHBoxLayout()
         layout.addLayout(self.serialControlWrapper)
         self.serialControlWrapper.addWidget(self.scroll,82)
-        self.serialControlWrapper.addWidget(self.subw,18)
+        self.serialControlWrapper.addWidget(self.subw)
+        self.subw.setFixedWidth(140)
 
 
         widget = QtWidgets.QWidget(self)

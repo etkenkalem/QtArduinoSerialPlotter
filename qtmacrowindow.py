@@ -216,11 +216,13 @@ class subwindow(QtWidgets.QWidget):
         if self.parent():
             self.seperateWindowAction.setText("Merge With Parent Window")
             self.setParent(None)
+            self.setMaximumWidth(115200)
             self.show()
         else:
             self.seperateWindowAction.setText("Seperate Window")
             self.setParent(self.sp)
-            self.sp.serialControlWrapper.addWidget(self,18)
+            self.sp.serialControlWrapper.addWidget(self)
+            self.setMaximumWidth(140)
 #            self.show()
 
 
