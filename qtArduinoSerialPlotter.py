@@ -35,7 +35,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.macroCommands=[]
 
         self.subw=subwindow()
-        self.subw.createWindow(100,400,self)
 
 
 
@@ -53,6 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         gLayoutToolbox=QtWidgets.QGroupBox("toolbox")
         hBoxLayoutTool=QtWidgets.QHBoxLayout(gLayoutToolbox)
+
 
 
         self.cmbPorts=QtWidgets.QComboBox(gLayoutToolbox)
@@ -111,15 +111,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.text.returnPressed.connect(self.btnSend.click)
 
 
-        def showMacrosWindow():
-            self.subw.show();
-
-        self.btnMacros = QtWidgets.QPushButton(qta.icon('fa.code',scale_factor=0.8,color="white"),'&Macros',self,clicked=showMacrosWindow)
-        #self.btnSend.setIcon(fa5_icon)
-        self.btnMacros.setStyleSheet("padding:4px; margin-left:10px")
-
-
-
 
         self.findSerialPorts()
         layout.addWidget(gLayoutToolbox,5)
@@ -162,10 +153,12 @@ class MainWindow(QtWidgets.QMainWindow):
             self.mouseLeft=False
         self.serialData.leaveEvent=l
         self.serialData.enterEvent=e
-        self.scroll = QtWidgets.QScrollArea()
-        self.scroll.setWidget(self.serialData)
-        self.scroll.setWidgetResizable(True)
-        self.scroll.setFixedHeight(100)
+
+
+
+
+
+
 
         layout.addWidget( self.gLayoutPlotBox,95)
         self.serialControlLayout.addWidget(self.btnOpenFile)
@@ -175,11 +168,24 @@ class MainWindow(QtWidgets.QMainWindow):
         self.serialControlLayout.addItem(space_ControlLayout)
         self.serialControlLayout.addWidget(self.text,80)
         self.serialControlLayout.addWidget(self.btnSend)
-        self.serialControlLayout.addWidget(self.btnMacros)
 
 
         layout.addLayout(self.serialControlLayout)
-        layout.addWidget(self.scroll)
+
+
+        self.scroll = QtWidgets.QScrollArea()
+        self.scroll.setWidget(self.serialData)
+        self.scroll.setWidgetResizable(True)
+        self.scroll.setFixedHeight(140)
+
+        self.subw.createWindow(100,400,self)
+        #self.subw.show()
+
+        self.serialControlWrapper= QtWidgets.QHBoxLayout()
+        layout.addLayout(self.serialControlWrapper)
+        self.serialControlWrapper.addWidget(self.scroll,82)
+        self.serialControlWrapper.addWidget(self.subw,18)
+
 
         widget = QtWidgets.QWidget(self)
         widget.setLayout(layout)

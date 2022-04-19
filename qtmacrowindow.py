@@ -21,7 +21,7 @@ from dragAndDrop import DDbutton, MacroButtonData
 class subwindow(QtWidgets.QWidget):
     def createWindow(self,WindowWidth,WindowHeight,sp):
         parent=None
-        super(subwindow,self).__init__(parent)
+        #super(subwindow,self).__init__(parent)
 
         self.sp=sp
 
@@ -53,6 +53,9 @@ class subwindow(QtWidgets.QWidget):
         self.saveMacroAction.triggered.connect(self.saveMacroFile)
         self.addButtonAction =self.menu.addAction("Add Button")
         self.addButtonAction.triggered.connect(self.addMacroButton)
+        self.seperateWindowAction =self.menu.addAction("Seperate Button")
+        self.seperateWindowAction.triggered.connect(self.seperateWindow)
+
 
         self.menuBtnEdit=QMenu()
         self.btnEditAction = self.menuBtnEdit.addAction(qta.icon("fa.edit",scale_factor=0.7,color="white"), "Edit")
@@ -64,7 +67,7 @@ class subwindow(QtWidgets.QWidget):
 
 
         self.setWindowTitle('Ctrl-rightClick to move buttons')
-        self.setGeometry(300, 300, 350, 240)
+        #self.setGeometry(300, 300, 350, 240)
         with open('macroScreen.tkmacro', 'r') as file:
             self.macroFile=file
             jsonData=self.macroFile.read()
@@ -208,6 +211,19 @@ class subwindow(QtWidgets.QWidget):
         self.layout().addChildWidget(button)
         button.move(self.mapFromGlobal(self.menu.pos()))
         print("add macro button")
+
+    def seperateWindow(self):
+        if self.parent():
+            self.seperateWindowAction.setText("Merge With Parent Window")
+            self.setParent(None)
+            self.show()
+        else:
+            self.seperateWindowAction.setText("Seperate Window")
+            self.setParent(self.sp)
+            self.sp.serialControlWrapper.addWidget(self,18)
+#            self.show()
+
+
 
 
 #macro buttons menu
