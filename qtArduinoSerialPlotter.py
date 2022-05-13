@@ -44,7 +44,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.isGraphsInitiated=False
         self.graphs=[]
-        self.bufferSize=250
+        self.bufferSize=125
         self.labelBuffer=[]
         self.selectedFileLines=[]
 
@@ -63,7 +63,7 @@ class MainWindow(QtWidgets.QMainWindow):
         lblBufferSize = QtWidgets.QLabel(gLayoutToolbox,text="Buffer Size:")
         cmbBufferSizes=QtWidgets.QComboBox(gLayoutToolbox)
         cmbBufferSizes.setMinimumWidth(80)
-        cmbBufferSizes.addItems(str(i) for i in range(250,10000,250))
+        cmbBufferSizes.addItems(str(i) for i in range(125,10000,125))
         cmbBufferSizes.setEditable(True)
         cmbBufferSizes.lineEdit().setReadOnly(True)
         cmbBufferSizes.lineEdit().setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
@@ -303,6 +303,19 @@ class MainWindow(QtWidgets.QMainWindow):
                     else:
                         l["plot"].setSymbolSize(0)
 
+    def sendAppropriateNextLine(self):
+        if len(self.selectedFileLines)>0:
+            found =False
+            while not found:
+                self.currentLineNumber += 1
+                if self.currentLineNumber < len(self.selectedFileLines):
+                    theLine=self.selectedFileLines[self.currentLineNumber]
+                    self.text.setText(str(theLine))
+                    if not str(theLine).startswith(";") and str(theLine) !="" and str(theLine) != " " and str(theLine)!="\n" and str(theLine)!="\r" :
+                        found=True
+                        self.serial.write(str(theLine).encode())
+                        self.serial.flush()
+
 
     @QtCore.pyqtSlot()
     def receive(self):
@@ -333,12 +346,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
             elif self.cbSendAutomatically.isChecked():
                 if text.__contains__(self.txtWaitCmd.text()):
-                    if len(self.selectedFileLines)>0:
-                        self.currentLineNumber += 1
-                        theLine=self.selectedFileLines[self.currentLineNumber]
-                        self.text.setText(str(theLine))
-                        self.serial.write(str(theLine).encode())
-                        self.serial.flush()
+                    self.sendAppropriateNextLine()
 
             self.parseTheLine(text)
             for i in range(len(self.graphs)):
