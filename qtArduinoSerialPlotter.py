@@ -315,6 +315,10 @@ class MainWindow(QtWidgets.QMainWindow):
                         found=True
                         self.serial.write(str(theLine).encode())
                         self.serial.flush()
+                else:
+                    found=False
+                    self.selectedFileLines.clear()
+
 
 
     @QtCore.pyqtSlot()
