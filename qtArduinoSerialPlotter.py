@@ -315,6 +315,10 @@ class MainWindow(QtWidgets.QMainWindow):
                         found=True
                         self.serial.write(str(theLine).encode())
                         self.serial.flush()
+                        msg = self.statusBar().currentMessage()
+                        msgSerial= msg.split(":")[0]
+                        self.statusBar().showMessage(msgSerial+":"+str(len(self.selectedFileLines))+"/"+str(self.currentLineNumber))
+
                 else:
                     found=False
                     self.selectedFileLines.clear()
