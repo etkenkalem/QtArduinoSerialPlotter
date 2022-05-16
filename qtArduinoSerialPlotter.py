@@ -320,7 +320,7 @@ class MainWindow(QtWidgets.QMainWindow):
                         self.statusBar().showMessage(msgSerial+":"+str(len(self.selectedFileLines))+"/"+str(self.currentLineNumber))
 
                 else:
-                    found=False
+                    found=True
                     self.selectedFileLines.clear()
 
 
