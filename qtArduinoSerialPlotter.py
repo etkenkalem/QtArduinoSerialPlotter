@@ -311,7 +311,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 if self.currentLineNumber < len(self.selectedFileLines):
                     theLine=self.selectedFileLines[self.currentLineNumber]
                     self.text.setText(str(theLine))
-                    if not str(theLine).startswith(";") and str(theLine) !="" and str(theLine) != " " and str(theLine)!="\n" and str(theLine)!="\r" :
+                    if not str(theLine).startswith(";") and str(theLine).startswith("(") and str(theLine).startswith("%") and str(theLine) !="" and str(theLine) != " " and str(theLine)!="\n" and str(theLine)!="\r" :
                         found=True
                         self.serial.write(str(theLine).encode())
                         self.serial.flush()
